@@ -1,0 +1,48 @@
+version: 1
+defaultAction: ask
+rules:
+  # Block any execution of rm
+  - id: block-rm
+    tool: execute_command
+    match_args_contain:
+      command: ["rm -rf", "rm -r"]
+    action: deny
+    message: "Recursive file deletion is blocked by policy."
+    risk: high
+    tags: ["destructive"]
+
+  # Block reading sensitive environment variables
+  - id: block-env-read
+    tool: read_file
+    match_args_contain:
+      path: [".env", "credentials"]
+    action: deny
+    message: "Reading sensitive credentials is blocked."
+    risk: critical
+    tags: ["sensitive_path"]
+
+  # Allow fetching from safe domains
+  - id: allow-github-api
+    tool: fetch
+    match_args:
+      url: "https://api.github.com/*"
+    action: allow
+
+  # Allow reading files in the local project
+  - id: allow-local-read
+    tool: read_file
+    match_args:
+      path: "/*"
+    action: allow
+
+  # Ask before executing commands
+  - id: ask-command
+    tool: execute_command
+    action: ask
+    message: "Agent wants to execute a command."
+
+  # Ask before fetching unknown domains
+  - id: ask-fetch
+    tool: fetch
+    action: ask
+    message: "Agent wants to make an external network request."

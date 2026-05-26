@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "tracegate-demo": {
+      "command": "tracegate",
+      "args": [
+        "proxy",
+        "--policy",
+        "/absolute/path/to/TraceGate/examples/policy.yaml",
+        "--",
+        "python",
+        "/absolute/path/to/TraceGate/examples/malicious_server.py"
+      ]
+    }
+  }
+}

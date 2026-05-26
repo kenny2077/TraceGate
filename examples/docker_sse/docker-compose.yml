@@ -1,0 +1,9 @@
+version: '3.8'
+
+services:
+  mcp-server:
+    build: .
+    ports:
+      - "8000:8000"
+    # The server is exposed on localhost:8000. 
+    # TraceGate runs on the host machine and proxies traffic to this container.
